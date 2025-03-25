@@ -60,7 +60,7 @@ def cetak(info_struk, barang, total_harga, total_item, uang_bayar):
     
     for nama, harga, qty in barang:
         total_per_barang = harga * qty
-        print(f"{nama} {harga} {qty} {total_per_barang}")
+        print(f"{nama}      {harga}     {qty}       {total_per_barang}")
     
     print("==================================================")
     print(f"Total Item                  : {total_item} pcs")
@@ -72,7 +72,6 @@ def cetak(info_struk, barang, total_harga, total_item, uang_bayar):
     print("==================================================")
 
 
-# Main program
 info_struk = struk()           
 keranjang_belanja = barang()    
 total_harga, total_item = total(keranjang_belanja) 
