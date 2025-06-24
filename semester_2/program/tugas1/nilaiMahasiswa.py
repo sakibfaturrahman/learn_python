@@ -100,3 +100,37 @@ for matkul in matkuls:
 
 ipk = round(total_mutu / jumlah_sks, 2) if jumlah_sks > 0 else 0
 print(f"Jumlah SKS: {jumlah_sks}, IPK: {ipk}")
+
+
+
+
+
+
+
+
+
+
+
+# class Converter:
+#     def __init__(self, decimal_number):
+#         self.decimal_number = decimal_number
+
+#     def convert_to_binary(self):
+#         if self.decimal_number < 0:
+#             raise ValueError("Mohon maaf tidak mensupport negatif number yah.")
+#         elif self.decimal_number == 0:
+#             return "0"
+#         else:
+#             binary_number = ""
+#             while self.decimal_number > 0:
+#                 remainder = self.decimal_number % 2
+#                 binary_number = str(remainder) + binary_number
+#                 self.decimal_number //= 2
+#             return binary_number
+
+# # contoh penggunaan
+# decimal_number = int(input("Masukkan bilangan desimal: "))
+# converter = Converter(decimal_number)
+# binary_number = converter.convert_to_binary()
+# print(f"Bilangan biner dari {decimal_number} adalah: {binary_number}")
+
