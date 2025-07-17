@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinLabs - Dashboard Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Smooth animations */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* Mobile sidebar animation */
+        .mobile-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- 1. NAVBAR UTAMA - Fixed Top -->
+    <nav class="fixed top-0 inset-x-0 z-50 bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Brand Logo -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">PinLabs</h1>
+                </div>
+
+                <!-- Search Bar - Hidden on mobile -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" placeholder="Cari sesuatu..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+                </div>
+
+                <!-- User Profile Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleUserDropdown()" class="flex items-center space-x-3 text-sm rounded-lg p-2 hover:bg-gray-100 transition-all">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <span class="text-white font-medium">AD</span>
+                        </div>
+                        <span class="hidden sm:block font-medium text-gray-700">Admin John Doe</span>
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-all">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            Profil
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-all">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Pengaturan Akun
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-all">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            Keluar
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="lg:hidden ml-4 p-2 rounded-lg hover:bg-gray-100 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. NAVIGASI SEKUNDER - Fixed Sub-Navbar -->
+    <nav class="fixed top-16 inset-x-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex space-x-8 h-12 items-center">
+                <a href="#" class="nav-link active text-blue-600 border-b-2 border-blue-600 px-1 py-3 text-sm font-medium transition-all">
+                    Dashboard
+                </a>
+                <a href="#" class="nav-link text-gray-500 hover:text-gray-700 px-1 py-3 text-sm font-medium transition-all">
+                    Daftar Kategori
+                </a>
+                <a href="#" class="nav-link text-gray-500 hover:text-gray-700 px-1 py-3 text-sm font-medium transition-all">
+                    Daftar Alat
+                </a>
+                <a href="#" class="nav-link text-gray-500 hover:text-gray-700 px-1 py-3 text-sm font-medium transition-all">
+                    Jadwal Operasi
+                </a>
+                <a href="#" class="nav-link text-gray-500 hover:text-gray-700 px-1 py-3 text-sm font-medium transition-all">
+                    Daftar Peminjaman
+                </a>
+                <a href="#" class="nav-link text-gray-500 hover:text-gray-700 px-1 py-3 text-sm font-medium transition-all relative">
+                    Pemberitahuan
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden lg:hidden"></div>
+    
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="mobile-sidebar fixed top-0 left-0 w-64 h-full bg-white z-40 lg:hidden">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Menu</h2>
+                <button onclick="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="p-4 space-y-2">
+            <a href="#" class="block px-4 py-3 text-blue-600 bg-blue-50 rounded-lg font-medium">Dashboard</a>
+            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all">Daftar Kategori</a>
+            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all">Daftar Alat</a>
+            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all">Jadwal Operasi</a>
+            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all">Daftar Peminjaman</a>
+            <a href="#" class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all flex items-center justify-between">
+                Pemberitahuan
+                <span class="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. MAIN CONTENT AREA -->
+    <main class="mt-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-semibold text-gray-900">Dashboard</h1>
+            <p class="mt-2 text-gray-600">Selamat datang kembali! Berikut adalah ringkasan aktivitas laboratorium hari ini.</p>
+        </div>
+
+        <!-- A. Overview Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+            <!-- Total Alat -->
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Alat</p>
+                        <p class="text-3xl font-semibold text-gray-900 mt-2">247</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17l9.2-9.2M17 17V7H7"></path>
+                            </svg>
+                            <span class="text-sm text-green-600 font-medium">+12%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Tasks -->
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Pending Tasks</p>
+                        <p class="text-3xl font-semibold text-gray-900 mt-2">18</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-4 h-4 text-red-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                            </svg>
+                            <span class="text-sm text-red-600 font-medium">+3%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jumlah Peminjaman -->
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Jumlah Peminjaman</p>
+                        <p class="text-3xl font-semibold text-gray-900 mt-2">156</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17l9.2-9.2M17 17V7H7"></path>
+                            </svg>
+                            <span class="text-sm text-green-600 font-medium">+8%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Users -->
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Active Users</p>
+                        <p class="text-3xl font-semibold text-gray-900 mt-2">89</p>
+                        <div class="flex items-center mt-2">
+                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17l9.2-9.2M17 17V7H7"></path>
+                            </svg>
+                            <span class="text-sm text-green-600 font-medium">+15%</span>
+                        </div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- B. Chart Area -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-lg font-semibold text-gray-900">Peminjaman Per Bulan</h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 text-sm bg-blue-100 text-blue-600 rounded-lg">6 Bulan</button>
+                    <button class="px-3 py-1 text-sm text-gray-500 hover:bg-gray-100 rounded-lg">1 Tahun</button>
+                </div>
+            </div>
+            <div class="aspect-video bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center">
+                <div class="text-center">
+                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <p class="text-gray-600 font-medium">Chart: Peminjaman Per Bulan</p>
+                    <p class="text-sm text-gray-500 mt-1">Data visualisasi akan ditampilkan di sini</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid: Table + Activity Feed -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- C. Data Table -->
+            <div class="xl:col-span-2 bg-white rounded-lg shadow-md border border-gray-100">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4 sm:mb-0">Daftar Peminjaman Terbaru</h2>
+                        <div class="flex space-x-3">
+                            <input type="text" placeholder="Cari peminjaman..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-all">
+                                Filter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    ID
+                                    <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                                    </svg>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    Nama Peminjam
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    Alat
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    Tanggal Pinjam
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                    Tanggal Kembali
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dr. Ahmad Fauzi</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mikroskop Digital</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">28 Jun 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5 Jul 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Sedang Dipinjam
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Prof. Siti Nurhaliza</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Spektrometer UV-Vis</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">25 Jun 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30 Jun 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Kembali
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Dr. Budi Santoso</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">pH Meter Digital</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 Jul 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">8 Jul 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Sedang Dipinjam
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- D. Activity Feed -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Aktivitas Terbaru</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Dr. Ahmad Fauzi meminjam Mikroskop Digital</p>
+                                <p class="text-xs text-gray-500">28 Jun 2025, 10:30 AM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Prof. Siti Nurhaliza mengembalikan Spektrometer UV-Vis</p>
+                                <p class="text-xs text-gray-500">25 Jun 2025, 3:15 PM</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Dr. Budi Santoso meminjam pH Meter Digital</p>
+                                <p class="text-xs text-gray-500">1 Jul 2025, 9:00 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-all">
+                        Lihat Semua Aktivitas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
+<script>
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('userDropdown');
+        if (!dropdown.contains(event.target) && !event.target.closest('button')) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Mobile sidebar overlay click handler
+    document.getElementById('mobileOverlay').addEventListener('click', function() {
+        toggleMobileMenu();
+    });
+    // Toggle mobile sidebar visibility
+    function toggleMobileMenu() {
+        const sidebar = document.getElementById('mobileSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('hidden');
+    }
+    // Close mobile sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('mobileSidebar');
+        const overlay = document.getElementById('mobileOverlay');
+        if (!sidebar.contains(event.target) && !event.target.closest('button') && !overlay.contains(event.target)) {
+            sidebar.classList.remove('open');
+            overlay.classList.add('hidden');
+        }
+    });
+
+    // Close mobile sidebar when clicking on a link
+    document.querySelectorAll('#mobileSidebar a').forEach(link => {
+        link.addEventListener('click', function() {
+            toggleMobileMenu();
+        });
+    });
+    // Close mobile sidebar when clicking on the overlay
+    document.getElementById('mobileOverlay').addEventListener('click', function() {
+        toggleMobileMenu();
+    });
+    // Close user dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('userDropdown');
+        if (!dropdown.contains(event.target) && !event.target.closest('button')) {
+            dropdown.classList.add('hidden');
+        }
+    });
+    // Toggle user dropdown visibility
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.toggle('hidden');
+    }
+    // Close user dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('userDropdown');
+        if (!dropdown.contains(event.target) && !event.target.closest('button')) {
+            dropdown.classList.add('hidden');
+        }
+    });
+    // Close user dropdown when clicking on a link
+    document.querySelectorAll('#userDropdown a').forEach(link => {
+        link.addEventListener('click', function() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.add('hidden');
+        });
+    });
+    // Close user dropdown when clicking on the overlay
+    document.getElementById('mobileOverlay').addEventListener('click', function() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.classList.add('hidden');
+    });
+</script>

@@ -1,3 +1,4 @@
+# Menyembunyikan atribut supaya tidak bisa diakses langsung.
 class Mahasiswa:
     def __init__(self, nama):
         self.__nama = nama  # atribut private
