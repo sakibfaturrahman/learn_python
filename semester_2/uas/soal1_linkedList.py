@@ -4,13 +4,11 @@ class NodeSakib:
         self.npm = npm
         self.nama = nama
         self.ipk = ipk
-        self.next = None  # Menunjuk ke node berikutnya
-
+        self.next = None  # node berikutnya
 
 class LinkedListSakib:
-    # Struktur linked list buatan Sakib
     def __init__(self):
-        self.head = None  # Node pertama (head) dari linked list
+        self.head = None  # head linked list
 
     def sakib_tambah_di_awal(self, npm, nama, ipk):
         node_baru = NodeSakib(npm, nama, ipk)
@@ -89,7 +87,7 @@ def sakib_jalankan_program_linkedlist():
     daftar_mahasiswa_sakib = LinkedListSakib()
 
     while True:
-        print("\n--- Sistem Manajemen Mahasiswa (Linked List by Sakib) ---")
+        print("\n--- Linkedlist Mahasiswa ---")
         print("1. Tambah mahasiswa di awal")
         print("2. Tambah mahasiswa di akhir")
         print("3. Hapus mahasiswa berdasarkan NPM")

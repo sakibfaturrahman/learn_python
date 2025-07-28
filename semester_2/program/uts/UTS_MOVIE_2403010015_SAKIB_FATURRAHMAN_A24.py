@@ -116,7 +116,6 @@ def pesan_tiket_sakib():
         if lagi == "T":
             break
 
-
 # fungsi view keranjang
 def show_keranjang_sakib():
     print("----------- Keranjang anda -----------------")

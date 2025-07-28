@@ -16,9 +16,7 @@ def sakib_binary_search(data_sakib, target_sakib):
 
     return -1
 
-
 def sakib_jalankan_binary_search():
-  
     while True:
         try:
             input_sakib = input("Masukkan daftar bilangan bulat terurut (misal: 5 10 15 20 25): ")
@@ -38,7 +36,6 @@ def sakib_jalankan_binary_search():
             print(" Input tidak valid. Harap masukkan bilangan bulat yang dipisahkan spasi.")
         except Exception as error:
             print(f" Terjadi kesalahan: {error}")
-
 
 if __name__ == "__main__":
     sakib_jalankan_binary_search()
